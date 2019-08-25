@@ -10,6 +10,15 @@ public class BreakoutGame {
 
     //region  // Fields
 
+    //狀態機
+    private enum eGameStatus {
+        INIT,
+        READY,
+        INGAME,
+        OVER,
+    }
+    private eGameStatus gameStatus;
+
     private int points; //得分
     private int lives;  //生命
 
@@ -32,6 +41,7 @@ public class BreakoutGame {
     private void Initialize() {
         //TODO:初始化所有 變數 (NEW)
         paddle = new PaddleShapeDrawable();
+        gameStatus = eGameStatus.INIT;
 
         points = 0;
         lives = 3;
@@ -58,16 +68,26 @@ public class BreakoutGame {
     //endregion
 
     //region  // Methods
-    boolean isReady = false;
     public void Update(Canvas canvas) {
-        // 我需要 這樣初始化
-        if(!isReady) {  //旗標法   來確定下面的code  只會執行1次
-            paddle.initCoords(canvas.getWidth(), canvas.getHeight());
-            isReady = true;
+        switch (gameStatus){
+            case INIT:
+                paddle.initCoords(canvas.getWidth(), canvas.getHeight());
+                gameStatus = eGameStatus.READY; // 切換狀態
+                break;
+            case READY:
+                RefreshUI(canvas);
+                RefreshGameComponent(canvas);
+                break;
+            case INGAME:
+                RefreshUI(canvas);
+                RefreshGameComponent(canvas);
+                break;
+            case OVER:
+                RefreshUI(canvas);
+                RefreshGameComponent(canvas);
+                break;
         }
-        //
-        RefreshUI(canvas);
-        RefreshGameComponent(canvas);
+
     }
 
 
