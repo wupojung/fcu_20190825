@@ -85,6 +85,18 @@ public class BreakoutGame {
         paddle.drawToCanvas(canvas);
         ball.drawToCanvas(canvas);
     }
+
+    private void checkGameOver() {
+        if (lives < 0) {
+            gameStatus = eGameStatus.OVER;
+        }
+    }
+
+    private void processGameLogin() {
+        lives -= ball.move();  //移動球 (如果死掉，會回傳1)
+        ball.checkPaddleCollision(paddle); //檢察是否碰撞到　球拍Paddle
+        points += ball.checkBlocksCollision(blockManager); //碰撞檢察 (如果撞到block 會回傳分數)
+    }
     //endregion
 
     //region  // Methods
@@ -116,6 +128,8 @@ public class BreakoutGame {
                 RefreshGameComponent(canvas);
                 break;
             case INGAME:
+                checkGameOver();
+                processGameLogin();
                 RefreshUI(canvas);
                 RefreshGameComponent(canvas);
                 break;
