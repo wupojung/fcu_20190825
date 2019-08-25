@@ -26,6 +26,7 @@ public class BreakoutGame {
     private Paint scorePaint;
     private Paint livesPaint;
 
+    //元件
     private PaddleShapeDrawable paddle;
 
     //endregion
@@ -46,6 +47,10 @@ public class BreakoutGame {
         points = 0;
         lives = 3;
 
+        initializePaint();
+    }
+
+    private  void initializePaint(){
         scorePaint = new Paint();
         scorePaint.setColor(Color.WHITE);
         scorePaint.setTextSize(25);
@@ -56,13 +61,18 @@ public class BreakoutGame {
         livesPaint.setTextSize(25);
     }
 
+    private void addToCanvas(Canvas canvas) {
+        paddle.initCoords(canvas.getWidth(), canvas.getHeight());
+        //ball.initCoords(canvas.getWidth(), canvas.getHeight());
+        //blockManager.initCoords(canvas.getWidth(), canvas.getHeight());
+    }
+
     private void RefreshUI(Canvas canvas) {
         canvas.drawText("得分:" + points, 0, 25, scorePaint); //scorePaint 筆刷
         canvas.drawText("生命:" + lives, canvas.getWidth(), 25, livesPaint);
     }
 
     private void RefreshGameComponent(Canvas canvas) {
-        //TODO:更新遊戲元件
         paddle.drawToCanvas(canvas);
     }
     //endregion
@@ -71,7 +81,7 @@ public class BreakoutGame {
     public void Update(Canvas canvas) {
         switch (gameStatus){
             case INIT:
-                paddle.initCoords(canvas.getWidth(), canvas.getHeight());
+                addToCanvas(canvas);
                 gameStatus = eGameStatus.READY; // 切換狀態
                 break;
             case READY:
@@ -87,10 +97,7 @@ public class BreakoutGame {
                 RefreshGameComponent(canvas);
                 break;
         }
-
     }
-
-
     //endregion
 
     //region  // Properties
