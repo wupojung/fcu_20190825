@@ -88,6 +88,23 @@ public class BreakoutGame {
     //endregion
 
     //region  // Methods
+
+    public void dispatchTouchOffset(float x, float y) {
+        switch (gameStatus) {
+            case READY: //有人touch 到 screen , 開始遊戲!
+                gameStatus = eGameStatus.INGAME;
+                break;
+            case INGAME:
+                paddle.move((int)x);
+                break;
+            case OVER:
+                points = 0;
+                lives = 3;
+                blockManager.reset();
+                gameStatus = eGameStatus.INGAME;
+                break;
+        }
+    }
     public void Update(Canvas canvas) {
         switch (gameStatus){
             case INIT:
