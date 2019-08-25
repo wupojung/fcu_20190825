@@ -27,6 +27,7 @@ public class BreakoutGame {
     //筆刷
     private Paint scorePaint;
     private Paint livesPaint;
+    private Paint getReadyPaint;
 
     //元件
     private BallShapeDrawable ball;
@@ -67,6 +68,11 @@ public class BreakoutGame {
         livesPaint.setTextAlign(Paint.Align.RIGHT);
         livesPaint.setColor(Color.WHITE);
         livesPaint.setTextSize(25);
+
+        getReadyPaint = new Paint();
+        getReadyPaint.setTextAlign(Paint.Align.CENTER);
+        getReadyPaint.setColor(Color.WHITE);
+        getReadyPaint.setTextSize(45);
     }
 
     private void addToCanvas(Canvas canvas) {
@@ -78,6 +84,16 @@ public class BreakoutGame {
     private void RefreshUI(Canvas canvas) {
         canvas.drawText("得分:" + points, 0, 25, scorePaint); //scorePaint 筆刷
         canvas.drawText("生命:" + lives, canvas.getWidth(), 25, livesPaint);
+        switch (gameStatus) {
+            case READY:
+                getReadyPaint.setColor(Color.WHITE);
+                canvas.drawText("請準備", canvas.getWidth() / 2, (canvas.getHeight() / 2) - (ball.getBounds().height()), getReadyPaint);
+                break;
+            case OVER:
+                getReadyPaint.setColor(Color.RED);
+                canvas.drawText("GAME OVER!!!", canvas.getWidth() / 2, (canvas.getHeight() / 2) - (ball.getBounds().height()) - 50, getReadyPaint);
+                break;
+        }
     }
 
     private void RefreshGameComponent(Canvas canvas) {
