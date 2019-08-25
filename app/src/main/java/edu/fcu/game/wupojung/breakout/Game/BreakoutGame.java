@@ -4,6 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import edu.fcu.game.wupojung.breakout.Game.GameComponent.BallShapeDrawable;
+import edu.fcu.game.wupojung.breakout.Game.GameComponent.BlockManager;
 import edu.fcu.game.wupojung.breakout.Game.GameComponent.PaddleShapeDrawable;
 
 public class BreakoutGame {
@@ -27,7 +29,9 @@ public class BreakoutGame {
     private Paint livesPaint;
 
     //元件
+    private BallShapeDrawable ball;
     private PaddleShapeDrawable paddle;
+    private BlockManager blockManager;
 
     //endregion
 
@@ -40,14 +44,18 @@ public class BreakoutGame {
 
     //region  // Utilities
     private void Initialize() {
-        //TODO:初始化所有 變數 (NEW)
-        paddle = new PaddleShapeDrawable();
         gameStatus = eGameStatus.INIT;
-
         points = 0;
         lives = 3;
 
+        initializeGameComponent();
         initializePaint();
+    }
+
+    private void initializeGameComponent() {
+        ball = new BallShapeDrawable();
+        paddle = new PaddleShapeDrawable();
+        blockManager = new BlockManager();
     }
 
     private  void initializePaint(){
@@ -63,8 +71,8 @@ public class BreakoutGame {
 
     private void addToCanvas(Canvas canvas) {
         paddle.initCoords(canvas.getWidth(), canvas.getHeight());
-        //ball.initCoords(canvas.getWidth(), canvas.getHeight());
-        //blockManager.initCoords(canvas.getWidth(), canvas.getHeight());
+        ball.initCoords(canvas.getWidth(), canvas.getHeight());
+        blockManager.initCoords(canvas.getWidth(), canvas.getHeight());
     }
 
     private void RefreshUI(Canvas canvas) {
@@ -73,7 +81,9 @@ public class BreakoutGame {
     }
 
     private void RefreshGameComponent(Canvas canvas) {
+        blockManager.drawToCanvas(canvas);
         paddle.drawToCanvas(canvas);
+        ball.drawToCanvas(canvas);
     }
     //endregion
 
